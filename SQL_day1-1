@@ -1,0 +1,234 @@
+sqlite> .table
+sqlite> .open c:\\db\\adb
+sqlite> create  table score(name, kor, eng, mat);
+sqlite> .schema
+CREATE TABLE score(name, kor, eng, mat);
+sqlite> select * from score;
+sqlite> insert into score values('이순신', 85, 87, 90);
+sqlite> insert into score values('강감찬', 75, 80, 95);
+sqlite> insert into score values('한석봉', 99, 98, 99);
+sqlite> select * from score;
+이순신|85|87|90
+강감찬|75|80|95
+한석봉|99|98|99
+sqlite> .mode column
+sqlite> .header on
+sqlite> select * from score;
+name  kor  eng  mat
+----  ---  ---  ---
+이순신   85   87   90
+강감찬   75   80   95
+한석봉   99   98   99
+sqlite> update score set kor = 98 where name = '이순신';
+sqlite> select * from score;
+name  kor  eng  mat
+----  ---  ---  ---
+이순신   98   87   90
+강감찬   75   80   95
+한석봉   99   98   99
+sqlite> delete from score where name = '강감찬';
+sqlite> select * from score;
+name  kor  eng  mat
+----  ---  ---  ---
+이순신   98   87   90
+한석봉   99   98   99
+sqlite> select name, kor from score;
+name  kor
+----  ---
+이순신   98
+한석봉   99
+sqlite> select eng, kor from score;
+eng  kor
+---  ---
+87   98
+98   99
+sqlite> select eng as "영어", kor as "국어" from score;
+영어  국어
+--  --
+87  98
+98  99
+sqlite> delete from score;
+sqlite> .schema
+CREATE TABLE score(name, kor, eng, mat);
+sqlite>
+sqlite>
+sqlite> .import  'c:\\db\\score_1.csv'  score
+sqlite> selet * from score;
+Error: near "selet": syntax error
+sqlite> select * from score;
+name   kor  eng  mat
+-----  ---  ---  ---
+?????   85   87   90
+??????     75   80   95
+?????    99   98   99
+?????  96   93   94
+?????   90   85   90
+?????     95   98   96
+?????    15   35   45
+?????    90   95   80
+??????   90   90   95
+?????     93   89   87
+sqlite> delete from score;
+sqlite> select * from score;
+sqlite> .import  'c:\\db\\score_1.csv'  score
+sqlite> select * from score;
+name  kor  eng  mat
+----  ---  ---  ---
+이순신   85   87   90
+강감찬   75   80   95
+한석봉   99   98   99
+황진이   96   93   94
+안중근   90   85   90
+박문수   95   98   96
+임꺽정   15   35   45
+김정호   90   95   80
+정몽주   90   90   95
+강녹수   93   89   87
+
+sqlite>  .open 'c:\\db\\adb';
+Error: near ".": syntax error
+sqlite> .open 'c:\\db\\adb';
+extra argument: ";"
+sqlite> .open 'c:\\db\\adb'
+sqlite> .mode column
+sqlite> .header on
+sqlite> .table
+city   score
+sqlite> .import 'c:\\db\\c2.csv' city
+sqlite> select * from city;
+city_name  city_pop
+---------  --------
+서울시         100
+부산사         200
+대전시         50
+sqlite> create table mt(mount, alt);
+sqlite> .table
+city   mt     score
+sqlite> .import 'c:\\db\\mt.txt' mt
+sqlite> select * from mt;
+mount  alt
+-----  ----
+설악산    1900
+지로산    1915
+덕유산    1300
+sqlite> insert into mt values('한라산', 1950);
+sqlite> select * from mt;
+mount  alt
+-----  ----
+설악산    1900
+지로산    1915
+덕유산    1300
+한라산    1950
+sqlite> select alt, mount from mt;
+alt   mount
+----  -----
+1900  설악산
+1915  지로산
+1300  덕유산
+1950  한라산
+sqlite> select mount as '산이름', alt as '해발' from mt;
+산이름  해발
+---  ----
+설악산  1900
+지로산  1915
+덕유산  1300
+한라산  1950
+sqlite> update mt set alt = 1708 where mount = '설악산';
+sqlite> select mount as '산이름', alt as '해발' from mt;
+산이름  해발
+---  ----
+설악산  1708
+지로산  1915
+덕유산  1300
+한라산  1950
+sqlite> update mt set mount = '지리산' where mount = '지로산';
+sqlite> select mount as '산이름', alt as '해발' from mt;
+산이름  해발
+---  ----
+설악산  1708
+지리산  1915
+덕유산  1300
+한라산  1950
+sqlite> update mt set alt = 2000;
+sqlite> select mount as '산이름', alt as '해발' from mt;
+산이름  해발
+---  ----
+설악산  2000
+지리산  2000
+덕유산  2000
+한라산  2000
+sqlite> delete from mt where mount='덕유산';
+sqlite> select mount as '산이름', alt as '해발' from mt;
+산이름  해발
+---  ----
+설악산  2000
+지리산  2000
+한라산  2000
+sqlite> delete from mt;
+sqlite> select mount as '산이름', alt as '해발' from mt;
+sqlite> select count(*) from mt;
+count(*)
+--------
+0
+sqlite> .schema
+CREATE TABLE score(name, kor, eng, mat);
+CREATE TABLE city(city_name, city_pop);
+CREATE TABLE mt(mount, alt);
+sqlite> drop table mt;
+sqlite> .schema
+CREATE TABLE score(name, kor, eng, mat);
+CREATE TABLE city(city_name, city_pop);
+sqlite>
+sqlite>
+sqlite> select * from score;
+name  kor  eng  mat
+----  ---  ---  ---
+이순신   85   87   90
+강감찬   75   80   95
+한석봉   99   98   99
+황진이   96   93   94
+안중근   90   85   90
+박문수   95   98   96
+임꺽정   15   35   45
+김정호   90   95   80
+정몽주   90   90   95
+강녹수   93   89   87
+
+## python과 sqlite 연동시키기
+  1) python에서 입력
+import sqlite3 as s
+
+con = s.connect('c:\\db\\adb')
+c = con.cursor()
+
+c.execute('drop table if exists lunch')
+c.execute('create table lunch(menu, price)')
+c.execute('insert into lunch values("짜장면", 5000)')
+c.execute('insert into lunch values("비빔밥", 8000)')
+c.execute('insert into lunch values("돈까스", 7000)')
+
+con.commit()
+c.close()
+con.close()
+
+  2) SQLite에서 확인
+sqlite> .schema
+CREATE TABLE score(name, kor, eng, mat);
+CREATE TABLE city(city_name, city_pop);
+CREATE TABLE lunch(menu, price);
+sqlite> select * from lunch;
+menu  price
+----  -----
+짜장면   5000
+비빔밥   8000
+돈까스   7000
+
+## python에서 SQL table 바로 띄워보기
+ - python에서 입력
+
+c.execute('select * from lunch')
+res = c.fetchall()
+
+for i in res:
+    print(i[0], i[1])
+    
