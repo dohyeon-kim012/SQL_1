@@ -1,0 +1,22 @@
+select user();
+use acedb;
+show tables;
+create table s(
+	id int auto_increment primary key, 
+    name varchar(20), kor tinyint, eng tinyint, mat tinyint);
+desc s;
+insert into s(name, kor, eng, mat) values('이순신',85,87,90);
+insert into s(name, kor, eng, mat) values('강감찬',75,80,95);
+insert into s(name, kor, eng, mat) values('한석봉',99,98,99);
+insert into s(name, kor, eng, mat) values('황진이',100,100,100);
+insert into s(name, kor, eng, mat) values('안중근',90,85,90);
+insert into s(name, kor, eng, mat) values('박문수',95,98,96);
+insert into s(name, kor, eng, mat) values('임꺽정',15,35,45);
+insert into s(name, kor, eng, mat) values('김정호',90,95,80);
+insert into s(name, kor, eng, mat) values('정몽주',90,90,95);
+insert into s(name, kor, eng, mat) values('양주종',50,45,60);
+
+select * from s;
+select * from s where kor > 80;
+select * from s where mat <= 50 or kor <= 50;
+select * from s where mat <= 50 and kor <= 50;
